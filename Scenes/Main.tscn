@@ -1,0 +1,110 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Scripts/VoxelMap.cs" type="Script" id=1]
+[ext_resource path="res://Prefabs/VoxelGrid.tscn" type="PackedScene" id=2]
+
+[sub_resource type="QuadMesh" id=1]
+
+[sub_resource type="CapsuleMesh" id=2]
+radius = 0.5
+mid_height = 0.001
+rings = 1
+
+[node name="Main" type="Node"]
+
+[node name="VoxelMap" type="Area2D" parent="."]
+position = Vector2( 512, 300 )
+script = ExtResource( 1 )
+size = 500.0
+voxelGridPrefab = ExtResource( 2 )
+stencilSquarePath = NodePath("Stencil Square")
+stencilCylinderPath = NodePath("Stencil Cylinder")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="VoxelMap"]
+
+[node name="Stencil Square" type="MeshInstance2D" parent="VoxelMap"]
+visible = false
+modulate = Color( 1, 0, 0, 0.313726 )
+z_index = 1
+mesh = SubResource( 1 )
+
+[node name="Stencil Cylinder" type="MeshInstance2D" parent="VoxelMap"]
+visible = false
+modulate = Color( 1, 0, 0, 0.12549 )
+z_index = 1
+mesh = SubResource( 2 )
+
+[node name="UI" type="Control" parent="."]
+margin_right = 128.0
+margin_bottom = 140.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="FillTypeSelector" type="Label" parent="UI"]
+margin_left = 16.2016
+margin_top = 8.98027
+margin_right = 69.2016
+margin_bottom = 22.9803
+text = "Fill Type"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="OptionButton" type="OptionButton" parent="UI/FillTypeSelector"]
+margin_top = 20.0
+margin_right = 107.0
+margin_bottom = 40.0
+text = "Filled"
+items = [ "Filled", null, false, 0, null, "Empty", null, false, 1, null ]
+selected = 0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="StencilSelector" type="Label" parent="UI"]
+margin_left = 16.2016
+margin_top = 56.4182
+margin_right = 69.2016
+margin_bottom = 70.4182
+text = "Stencil"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="OptionButton" type="OptionButton" parent="UI/StencilSelector"]
+margin_top = 20.0
+margin_right = 107.0
+margin_bottom = 40.0
+text = "Square"
+items = [ "Square", null, false, 0, null, "Circle", null, false, 1, null ]
+selected = 0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="RadiusSelector" type="Label" parent="UI"]
+margin_left = 16.2016
+margin_top = 105.031
+margin_right = 58.2016
+margin_bottom = 119.031
+text = "Radius"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HSlider" type="HSlider" parent="UI/RadiusSelector"]
+margin_top = 10.0
+margin_right = 107.0
+margin_bottom = 34.0
+max_value = 5.0
+tick_count = 6
+ticks_on_borders = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+[connection signal="mouse_entered" from="VoxelMap" to="VoxelMap" method="SetMouseInRangeTrue"]
+[connection signal="mouse_exited" from="VoxelMap" to="VoxelMap" method="SetMouseInRangeFalse"]
+[connection signal="item_selected" from="UI/FillTypeSelector/OptionButton" to="VoxelMap" method="OnFillOptionButtonItemSelected"]
+[connection signal="item_selected" from="UI/StencilSelector/OptionButton" to="VoxelMap" method="OnStencilOptionButtonItemSelected"]
+[connection signal="value_changed" from="UI/RadiusSelector/HSlider" to="VoxelMap" method="OnRadiusHSliderValueChanged"]
