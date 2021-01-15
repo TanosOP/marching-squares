@@ -1,6 +1,0 @@
-[gd_scene load_steps=2 format=2]
-
-[sub_resource type="QuadMesh" id=1]
-
-[node name="Voxel" type="MeshInstance2D"]
-mesh = SubResource( 1 )
